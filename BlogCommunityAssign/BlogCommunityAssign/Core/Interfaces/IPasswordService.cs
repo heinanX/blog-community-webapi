@@ -1,11 +1,12 @@
 ﻿using BlogCommunityAssign.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogCommunityAssign.Core.Interfaces
 {
     public interface IPasswordService
     {
+        bool VerifyPassword(string password1, string password2);
 
-        public string HashPassword(User user, string password);
-        public bool VerifyPassword(User user, string hashedPassword, string password);
+        string HashPassword(string password);
     }
 }

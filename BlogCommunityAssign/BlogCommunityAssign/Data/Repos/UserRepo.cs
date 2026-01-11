@@ -15,9 +15,10 @@ namespace BlogCommunityAssign.Data.Repos
             _db = context;
         }
         
-        public async Task<User> Create(User user)
+        public async Task Register(User user)
         {
-            throw new NotImplementedException();
+            _db.Add(user);
+            await _db.SaveChangesAsync();
         }
 
         public async Task<bool> Delete(int id)
@@ -49,14 +50,23 @@ namespace BlogCommunityAssign.Data.Repos
             throw new NotImplementedException();
         }
 
-        public async Task<User?> Login(LoginCredentialsDTO credentials)
+        public async Task<User?> GetUserByEmailorUsername(string identifier)
         {
             return await _db.Users
                 .FirstOrDefaultAsync(u =>
-                u.Username == credentials.Identifier ||
-                u.Email == credentials.Identifier
+                u.Username == identifier ||
+                u.Email == identifier
                 );
 
+        }
+
+        public async Task<User?> IsExistingEmailorUsername(string username, string email)
+        {
+            return await _db.Users
+                 .FirstOrDefaultAsync(u =>
+                 u.Username == username ||
+                 u.Email == email
+                 );
         }
 
         public async Task<bool> Logout(int id)

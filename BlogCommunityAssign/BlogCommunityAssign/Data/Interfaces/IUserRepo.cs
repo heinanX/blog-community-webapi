@@ -5,7 +5,8 @@ namespace BlogCommunityAssign.Data.Interfaces
 {
     public interface IUserRepo
     {
-        Task<User?> Login(LoginCredentialsDTO credentials);
+        Task<User?> GetUserByEmailorUsername(string identifier);
+        Task<User?> IsExistingEmailorUsername(string username, string email);
 
         Task<bool> Logout(int id);
 
@@ -17,7 +18,7 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<User?> GetCompleteUserById(int id);
 
-        Task<User> Create(User user);
+        Task Register(User user);
 
         Task<User> Update(int id);
 

@@ -1,8 +1,10 @@
-﻿using BlogCommunityAssign.Core.Interfaces;
+﻿using Azure.Identity;
+using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
 using BlogCommunityAssign.Data.Repos;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace BlogCommunityAssign.Core.Services
@@ -18,9 +20,23 @@ namespace BlogCommunityAssign.Core.Services
             _passwordService = passwordService;
         }
 
-        public Task<UserDTO> CreateUser(RegisterNewUserDTO user)
+        public async Task<UserDTO> CreateUser(RegisterNewUserDTO newUserDTO)
         {
-            throw new NotImplementedException();
+            User? existingUser = await _repo.IsExistingEmailorUsername(newUserDTO.Username, newUserDTO.Email);
+            if (existingUser != null) throw new Exception("username or email is already taken");
+
+            User newUser = new User
+            {
+                Username = newUserDTO.Username,
+                Email = newUserDTO.Email
+            };
+
+            newUser.Password = _passwordService.HashPassword(newUserDTO.Password);
+
+            await _repo.Register(newUser);
+
+            return new UserDTO(newUser);
+
         }
 
         public Task<bool> DeleteUser(int id)
@@ -53,11 +69,14 @@ namespace BlogCommunityAssign.Core.Services
 
         public async Task<UserDTO?> Login(LoginCredentialsDTO credentials)
         {
-            User? user = await _repo.Login(credentials);
+            User? user = await _repo.GetUserByEmailorUsername(credentials.Identifier);
 
             if (user == null) return null;
+            //Console.WriteLine("Stored hash: " + user.Password);
+            //Console.WriteLine("Provided password: '" + credentials.Password + "'");
 
-            bool isValid = _passwordService.VerifyPassword(user, user.Password, credentials.Password);
+            bool isValid = _passwordService.VerifyPassword(credentials.Password, user.Password);
+            //Console.WriteLine($"this is from inside login method and isValid: {isValid}");
             if (!isValid) return null;
 
             UserDTO userDTO = new UserDTO(user);

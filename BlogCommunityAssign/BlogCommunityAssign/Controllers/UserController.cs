@@ -55,9 +55,15 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpPost("register")]
-        public IActionResult RegisterUser(User user)
+        public async Task<ActionResult> RegisterUser(RegisterNewUserDTO newUserDTO)
         {
-            return Created();
+            UserDTO user = await _service.CreateUser(newUserDTO);
+
+            return StatusCode(201, new
+            {
+                message = "User created successfully",
+                user
+            });
         }
 
 

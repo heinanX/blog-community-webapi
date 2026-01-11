@@ -84,3 +84,17 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 - Look up best practises for password hashing
 - Read up on ASP.NET CORE Identity's built in password hashing
 - Apply Identity's PasswordHasher into service layer
+
+# Task 4: Troubleshooting PasswordHasher
+- Successfully hashed the password
+- Failed to make a successful verification
+- Tried to look up documentation or articles but the information was scarce
+
+Solution: With little to no documentation other than Microsoft's own,
+I decided to go with a nuget packagage I'm already familiar with: BCrypt
+
+# Task 5: Implementing BCrypt to hash passwords before they're saved to DB
+- Successful login
+
+
+--- Next up: Implement a JWT token upon successful login

@@ -1,28 +1,20 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
-using BlogCommunityAssign.Data.Entities;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace BlogCommunityAssign.Core.Services
 {
     public class PasswordService : IPasswordService
     {
-        private readonly IPasswordHasher<User> _hasher;
-
-        public PasswordService(IPasswordHasher<User> hasher)
+        public string HashPassword(string password)
         {
-            _hasher = hasher;
+            // Generate a salt internally, hash password
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        public string HashPassword(User user, string password)
+        public bool VerifyPassword(string password, string hashedPassword)
         {
-            return _hasher.HashPassword(user, password);
-        }
-
-        public bool VerifyPassword(User user, string hashedPassword, string password)
-        {
-            // Because these two are enums, and they're basically a namned integer type (aka integers under the hood),
-            // they can be compared using the == comparison (Ie. this results in 1 == 1)
-            return _hasher.VerifyHashedPassword(user, hashedPassword, password) == PasswordVerificationResult.Success;
+            // Compare plaintext password with stored hash
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 }
