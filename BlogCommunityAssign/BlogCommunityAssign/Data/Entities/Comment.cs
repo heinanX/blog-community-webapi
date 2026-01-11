@@ -1,15 +1,19 @@
-﻿namespace BlogCommunityAssign.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlogCommunityAssign.Data.Entities
 {
     public class Comment
     {
         public int Id { get; set; }
         public int? UserId { get; set; }
-        public User User { get; set; } // Navigation Property for user
+        public User? User { get; set; } // Navigation Property for user
 
         public int PostId { get; set; }
-        public Post Post { get; set; } // Navigation Property for User
+        public Post? Post { get; set; } // Navigation Property for User
 
-        public string Content { get; set; }
+        [Required]
+        [MaxLength(1000)]
+        public string Content { get; set; } = "";
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

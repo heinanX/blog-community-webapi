@@ -39,7 +39,7 @@ namespace BlogCommunityAssign.Data
 
 
             modelBuilder.Entity<Post>().HasData(
-                new Post { Id = 1, Title = "Test Title", Content = "This is the first blog post", CreatedAt = new DateTime(2026, 1, 10), UpdatedAt = new DateTime(2026, 1, 10), UserId = 2 }
+                new Post { Id = 1, Title = "Test Title", Content = "This is the first blog post", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, UserId = 2 }
                 );
 
             modelBuilder.Entity<Post>()
@@ -51,7 +51,7 @@ namespace BlogCommunityAssign.Data
 
 
             modelBuilder.Entity<Comment>().HasData(
-                new Comment { Id = 1, Content = "This is just a dummy comment", UserId = 3, CreatedAt = new DateTime(2026, 1, 10), UpdatedAt = new DateTime(2026, 1, 10), PostId = 1}
+                new Comment { Id = 1, Content = "This is just a dummy comment", UserId = 3, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, PostId = 1}
                 );
 
         }
