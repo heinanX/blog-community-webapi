@@ -1,18 +1,13 @@
-﻿using Azure.Identity;
-using BlogCommunityAssign.Core.Configuration;
+﻿using BlogCommunityAssign.Core.Configuration;
 using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
-using BlogCommunityAssign.Data.Repos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogCommunityAssign.Core.Services
 {

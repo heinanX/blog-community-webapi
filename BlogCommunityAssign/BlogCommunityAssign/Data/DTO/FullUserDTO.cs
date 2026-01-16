@@ -1,4 +1,5 @@
-﻿using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.DTO.Posts;
+using BlogCommunityAssign.Data.Entities;
 
 namespace BlogCommunityAssign.Data.DTO
 {

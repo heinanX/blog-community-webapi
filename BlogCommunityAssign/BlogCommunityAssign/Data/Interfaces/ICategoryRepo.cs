@@ -1,5 +1,4 @@
-﻿using BlogCommunityAssign.Data.DTO;
-using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.Entities;
 
 namespace BlogCommunityAssign.Data.Interfaces
 {
@@ -14,7 +13,7 @@ namespace BlogCommunityAssign.Data.Interfaces
         Task<Category> Create(Category category);
 
 
-        Task<CategoryDTO> Update(int id);
+        Task<Category> Update(Category category);
 
 
         Task<bool> Delete(int id);

@@ -106,16 +106,46 @@ I decided to go with a nuget package I'm already familiar with: BCrypt
 .
 .
 
+1/13/26
+
+# Task 1: Write JWT token logic and set in Login
+
+.
+.
+.
+
 1/16/26
 
-Task 1: Create all CRUD operations for Category
+# Task 1: Create all CRUD operations for Category
 - write ReadAll operation
 - write Get Category by Id operation
 - write Create operation
-- - write Delete operation <---- this is where Im at
-- write Update operation <---- this is where Im at
+- write Delete operation
+- write Update operation
 
 Reflection on improvement:
 I went into this project thinking I wouldn't have the need for that many DTOs so I opted out on using Automapper.
 At this point I have so many DTOs though, that if I'd do this again, I'd use Automapper from the start and for
 easier locating, I'd have a folder structure inside the DTOs.
+
+# Task 2: Create all CRUD operations for Post
+- write ReadAll operation
+- write Get Post by Id operation
+- write Delete operation
+
+
+# Task 3: Move Category DTOs into a folder v_v;
+
+# Task 4: Continue createing CRUD operations for Post
+- write Create operation
+- Test Create endpoint = success!
+- Add date to create post
+
+
+--- Next up: write Update operation
+
+.
+.
+.
+
+1/17/26

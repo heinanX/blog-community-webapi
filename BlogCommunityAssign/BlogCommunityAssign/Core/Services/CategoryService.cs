@@ -1,5 +1,5 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
-using BlogCommunityAssign.Data.DTO;
+using BlogCommunityAssign.Data.DTO.Categories;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
 
@@ -14,18 +14,11 @@ namespace BlogCommunityAssign.Core.Services
             _repo = repo;
         }
 
-        public async Task<CategoryDTO> AddCategory(CreateCategoryDTO dto)
+        public async Task<Category?> AddCategory(CreateCategoryDTO dto)
         {
-            Category newCategory = new Category{CategoryName = dto.CategoryName};
+            Category? newCategory = new Category{CategoryName = dto.CategoryName};
 
-            Category returnedCategory = await _repo.Create(newCategory);
-
-            CategoryDTO newDto = new CategoryDTO
-            {
-                Id = returnedCategory.Id,
-                CategoryName = returnedCategory.CategoryName
-            };
-            return newDto;
+            return await _repo.Create(newCategory);
 
         }
 
@@ -44,9 +37,16 @@ namespace BlogCommunityAssign.Core.Services
             return await _repo.GetById(id);
         }
 
-        public Task<CategoryDTO> UpdateCategory(int id)
+        public async Task<Category?> UpdateCategory(int id, UpdateCategoryDTO category)
         {
-            throw new NotImplementedException();
+            Category? existing = await _repo.GetById(id);
+            if (existing == null) return null;
+
+            existing.CategoryName = category.CategoryName!;
+
+            Category updated = await _repo.Update(existing);
+            return updated;
+            
         }
     }
 }

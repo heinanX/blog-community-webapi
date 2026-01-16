@@ -1,5 +1,4 @@
-﻿using BlogCommunityAssign.Data.DTO;
-using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,9 +40,11 @@ namespace BlogCommunityAssign.Data.Repos
             return await _db.Categories.FindAsync(id);
         }
 
-        public async Task<CategoryDTO> Update(int id)
+        public async Task<Category> Update(Category category)
         {
-            throw new NotImplementedException();
+            _db.Categories.Update(category);
+            await _db.SaveChangesAsync();
+            return category;
         }
     }
 }

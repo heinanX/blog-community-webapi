@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogCommunityAssign.Core.Interfaces;
+using BlogCommunityAssign.Data.DTO;
+using BlogCommunityAssign.Data.DTO.Posts;
+using BlogCommunityAssign.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BlogCommunityAssign.Controllers
 {
@@ -6,19 +12,76 @@ namespace BlogCommunityAssign.Controllers
     [Route("api/posts")]
     public class PostController : ControllerBase
     {
-        //[HttpGet]
+
+        private readonly IPostService _service;
+
+        public PostController(IPostService service)
+        {
+            _service = service;
+        }
 
 
-        //[HttpGet] by ID
+        [HttpGet]
+        public async Task<ActionResult> Get()
+        {
+
+            List<Post> posts = await _service.GetAllPosts();
+            return Ok(posts);
+
+        }
+
+        [HttpGet("{id}")] //by ID
+        public async Task<ActionResult> Get(int id)
+        {
+
+            Post? post = await _service.GetPostById(id);
+            if (post == null) return NotFound("Post not found");
+
+            return Ok(post);
+
+        }
 
 
-        //[HttpPost]
+        [HttpPost("create")]
+        [Authorize]
+        public async Task<ActionResult> Post(CreatePostDTO category)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            Post created = await _service.CreatePost(category, userId);
+
+            if (created == null) return BadRequest();
+            return Created();
+        }
 
 
-        //[HttpPut]
+        //[HttpPut("update/{id}")]
+        //[Authorize]
+        //public async Task<ActionResult> Put(int id, UpdatePostDTO postDto)
+        //{
+
+        //    Post? updated = await _service.UpdatePost(id, postDto);
+        //    if (updated == null) return NotFound();
+
+        //    return NoContent();
+
+        //}
 
 
-        //[HttpDelete]
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<ActionResult> Delete(int id)
+        {
+
+            bool deleted = await _service.DeletePost(id);
+            if (!deleted) return BadRequest("Not a valid id");
+
+            return Ok("Post deleted!");
+
+        }
 
 
     }

@@ -1,31 +1,52 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
+using BlogCommunityAssign.Data.DTO.Posts;
 using BlogCommunityAssign.Data.Entities;
+using BlogCommunityAssign.Data.Interfaces;
+using System.Security.Claims;
 
 namespace BlogCommunityAssign.Core.Services
 {
     public class PostService : IPostService
     {
-        public Task<Post> CreatePost(Post post)
+
+        private readonly IPostRepo _repo;
+
+        public PostService(IPostRepo repo)
         {
-            throw new NotImplementedException();
+            _repo = repo;
         }
 
-        public Task<bool> DeletePost(int id)
+        public async Task<Post> CreatePost(CreatePostDTO post, int id)
         {
-            throw new NotImplementedException();
+
+            Post newPost = new Post
+            {
+                UserId = id,
+                Title = post.Title,
+                Content = post.Content,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            return await _repo.Create(newPost);
         }
 
-        public Task<List<Post>> GetAllPosts()
+        public async Task<bool> DeletePost(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.Delete(id);
         }
 
-        public Task<Post?> GetPostById(int id)
+        public async Task<List<Post>> GetAllPosts()
         {
-            throw new NotImplementedException();
+            return await _repo.GetAll();
         }
 
-        public Task<Post> UpdatePost(int id)
+        public async Task<Post?> GetPostById(int id)
+        {
+            return await _repo.GetById(id);
+        }
+
+        public Task<Post?> UpdatePost(int id)
         {
             throw new NotImplementedException();
         }

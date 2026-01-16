@@ -1,4 +1,5 @@
-﻿using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.DTO.Posts;
+using BlogCommunityAssign.Data.Entities;
 
 namespace BlogCommunityAssign.Core.Interfaces
 {
@@ -10,10 +11,10 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<Post?> GetPostById(int id);
 
 
-        Task<Post> CreatePost(Post post);
+        Task<Post> CreatePost(CreatePostDTO post, int id);
 
 
-        Task<Post> UpdatePost(int id);
+        Task<Post?> UpdatePost(int id);
 
 
         Task<bool> DeletePost(int id);

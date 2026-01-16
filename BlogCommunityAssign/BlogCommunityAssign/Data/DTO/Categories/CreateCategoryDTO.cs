@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogCommunityAssign.Data.DTO
+namespace BlogCommunityAssign.Data.DTO.Categories
 {
     public class CreateCategoryDTO
     {
