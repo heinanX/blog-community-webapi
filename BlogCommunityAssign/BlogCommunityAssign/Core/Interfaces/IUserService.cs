@@ -9,6 +9,8 @@ namespace BlogCommunityAssign.Core.Interfaces
 
         Task<bool> Logout(int id);
 
+        string GenerateToken(AuthResponseDTO user);
+
         Task<List<User>> GetAllUsers();
 
         Task<List<UserDTO>> GetAllUsersWithComments();

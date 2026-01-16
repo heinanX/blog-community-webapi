@@ -1,31 +1,50 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
+using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.Entities;
+using BlogCommunityAssign.Data.Interfaces;
 
 namespace BlogCommunityAssign.Core.Services
 {
     public class CategoryService : ICategoryService
     {
-        public Task<Category> CreateCategory(Category Category)
+        private readonly ICategoryRepo _repo;
+
+        public CategoryService(ICategoryRepo repo)
         {
-            throw new NotImplementedException();
+            _repo = repo;
         }
 
-        public Task<bool> DeleteCategory(int id)
+        public async Task<CategoryDTO> AddCategory(CreateCategoryDTO dto)
         {
-            throw new NotImplementedException();
+            Category newCategory = new Category{CategoryName = dto.CategoryName};
+
+            Category returnedCategory = await _repo.Create(newCategory);
+
+            CategoryDTO newDto = new CategoryDTO
+            {
+                Id = returnedCategory.Id,
+                CategoryName = returnedCategory.CategoryName
+            };
+            return newDto;
+
         }
 
-        public Task<List<Category>> GetAllCategories()
+        public async Task<bool> DeleteCategory(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.Delete(id);
         }
 
-        public Task<Category?> GetCategoryById(int id)
+        public async Task<List<Category>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return await _repo.GetAll();
         }
 
-        public Task<Category> UpdateCategory(int id)
+        public async Task<Category?> GetCategoryById(int id)
+        {
+            return await _repo.GetById(id);
+        }
+
+        public Task<CategoryDTO> UpdateCategory(int id)
         {
             throw new NotImplementedException();
         }

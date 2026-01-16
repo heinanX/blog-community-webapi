@@ -1,8 +1,6 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
-using BlogCommunityAssign.Core.Services;
 using BlogCommunityAssign.Data.DTO;
-using BlogCommunityAssign.Data.Entities;
-using BlogCommunityAssign.Data.Repos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCommunityAssign.Controllers
@@ -12,6 +10,7 @@ namespace BlogCommunityAssign.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+
 
         public UserController(IUserService service)
         {
@@ -67,8 +66,12 @@ namespace BlogCommunityAssign.Controllers
         }
 
 
-        //[HttpPut]
-
+        [HttpPut("/update-user/{id}")]
+        [Authorize]
+        public IActionResult UpdateUser(int id)
+        {
+            return Ok($"{id} updated");
+        }
 
         //[HttpDelete]
 
@@ -80,7 +83,13 @@ namespace BlogCommunityAssign.Controllers
 
             if (user == null) return Unauthorized("Incorrect login");
 
-            return Ok($"User {user.Username} is logged in"); // also where you add a token I guess?
+            AuthResponseDTO tokenUser = new AuthResponseDTO(user.Id, user.Username, user.Email, "", user.IsAdmin);
+
+            string token = _service.GenerateToken(tokenUser);
+
+            tokenUser.Token = token;
+
+            return Ok(tokenUser); // also where you add a token I guess?
         }
 
 

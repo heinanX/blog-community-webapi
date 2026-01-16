@@ -51,9 +51,9 @@ Step 2. Create folders and classes for each model
 - **Controllers**  for Calls
 - **Repos** for Logic
 
-- Step 3. Test one route to check working status
+Step 3. Test one route to check working status
 
-Issue faced: Comments weren't naturally included inside the User response. Included that data in the object and got an 
+Issue faced: Comments weren't naturally included inside the User response. Included that data in the object and got a 
 "JsonException: A possible object cycle was detected." error caused by the bidirectional navigation properties in User and Comment.
 
 Solution: Added DTOs to break the circular navigation between the two models thus allowing safe serialization.
@@ -61,8 +61,11 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 
 # Task 4: Introducing DTO classes
 
+.
+.
+.
 
-1/11/26 Creating Repositories, Services for each entity
+1/11/26 - Creating Repositories, Services for each entity
 
 # Task 1: Set up folder structure and classes.
 - ceate Repository Interfaces and Repos
@@ -91,10 +94,28 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 - Tried to look up documentation or articles but the information was scarce
 
 Solution: With little to no documentation other than Microsoft's own,
-I decided to go with a nuget packagage I'm already familiar with: BCrypt
+I decided to go with a nuget package I'm already familiar with: BCrypt
 
 # Task 5: Implementing BCrypt to hash passwords before they're saved to DB
 - Successful login
 
 
 --- Next up: Implement a JWT token upon successful login
+
+.
+.
+.
+
+1/16/26
+
+Task 1: Create all CRUD operations for Category
+- write ReadAll operation
+- write Get Category by Id operation
+- write Create operation
+- - write Delete operation <---- this is where Im at
+- write Update operation <---- this is where Im at
+
+Reflection on improvement:
+I went into this project thinking I wouldn't have the need for that many DTOs so I opted out on using Automapper.
+At this point I have so many DTOs though, that if I'd do this again, I'd use Automapper from the start and for
+easier locating, I'd have a folder structure inside the DTOs.
