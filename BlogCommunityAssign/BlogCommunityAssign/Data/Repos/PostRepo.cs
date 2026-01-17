@@ -20,14 +20,10 @@ namespace BlogCommunityAssign.Data.Repos
             return post;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task Delete(Post post)
         {
-            Post? isPost = await GetById(id);
-            if (isPost == null) return false;
-
-            _db.Remove(isPost);
+            _db.Remove(post);
             await _db.SaveChangesAsync();
-            return true;
         }
 
         public async Task<List<Post>> GetAll()

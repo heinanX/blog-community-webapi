@@ -86,8 +86,13 @@ namespace BlogCommunityAssign.Controllers
         [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+            bool isAdmin = User.IsAdmin();
 
-            bool deleted = await _service.DeletePost(id);
+            int userId = int.Parse(userIdClaim);
+
+            bool deleted = await _service.DeletePost(id, userId, isAdmin);
             if (!deleted) return BadRequest("Not a valid id");
 
             return Ok("Post deleted!");

@@ -11,5 +11,7 @@ namespace BlogCommunityAssign.Data.DTO.Posts
 
         [MaxLength(6000)]
         public string? Content { get; set; }
+
+        public ICollection<string>? Categories { get; set; }
     }
 }

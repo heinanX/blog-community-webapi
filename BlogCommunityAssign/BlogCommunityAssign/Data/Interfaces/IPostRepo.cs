@@ -12,6 +12,6 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<Post> Update(Post post);
 
-        Task<bool> Delete(int id);
+        Task Delete(Post post);
     }
 }

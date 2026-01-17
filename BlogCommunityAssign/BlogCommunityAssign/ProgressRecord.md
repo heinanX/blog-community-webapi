@@ -123,7 +123,7 @@ I decided to go with a nuget package I'm already familiar with: BCrypt
 - write Delete operation
 - write Update operation
 
-Reflection on improvement:
+```Future improvement:```
 I went into this project thinking I wouldn't have the need for that many DTOs so I opted out on using Automapper.
 At this point I have so many DTOs though, that if I'd do this again, I'd use Automapper from the start and for
 easier locating, I'd have a folder structure inside the DTOs.
@@ -151,3 +151,48 @@ easier locating, I'd have a folder structure inside the DTOs.
 1/17/26
 
 # Task 1: Write Update operation for Post
+- Create Method to check claim for Admin role
+- Add restrictions to endpoint
+
+# Task 2: Add Categories to Post
+- Add GetyByName Method that retrieves categories if matched with json data
+- Loop through the list and if match is found, add to Post object, if not, ignore
+
+```Future improvement:```
+x Current code does not allow removal of categories, only replacements
+x Consider converting the resulting list to a HashSet for faster lookups when merging categories if processing a lot of data
+x Current code clear old categories before applying updated ones => write logic that merge old with new ones
+
+
+# Task 3: Add restrictions to 'delete post' and 'create post'
+
+# Task 4: Test all endpoints so far
+- Finished with no remarks
+
+# Task 5: Create CRUD operations for User
+- write ReadAll operation
+- write Get Post by Id operation
+- write Delete operation
+- write Create operation -- check old logic
+
+# Task 6: Create a Log out method
+
+
+--- --- --- --- --- ---
+Stuff to be completed for the assignment
+
+# Task 4: Cleanup and restructuring 'create post' - use static getUserId();
+# Task : Add logic for Logged in User to comment another user's post
+- restrict anonymous users
+- restrict user from commenting their own posts
+
+# Task: Add search function
+- add support for title search
+- add support for category search
+
+# Task: Add restrictions to creating, updating and deleting a Category
+
+--- --- --- --- --- ---
+Future Tasks to improve project:
+
+# Task: When saving strings to the database, make them lower case before saving

@@ -9,6 +9,8 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<Category?> GetById(int id);
 
+        Task<List<Category>> GetByNames(IEnumerable<string> names);
+
 
         Task<Category> Create(Category category);
 

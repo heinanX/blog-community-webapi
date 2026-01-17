@@ -18,6 +18,6 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<Post?> UpdatePost(int id, bool isAdmin, int? userId, UpdatePostDTO post);
 
 
-        Task<bool> DeletePost(int id);
+        Task<bool> DeletePost(int id, int userId, bool isAdmin);
     }
 }
