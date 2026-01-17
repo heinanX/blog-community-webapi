@@ -46,9 +46,22 @@ namespace BlogCommunityAssign.Core.Services
             return await _repo.GetById(id);
         }
 
-        public Task<Post?> UpdatePost(int id)
+        public async Task<Post?> UpdatePost(int id, bool isAdmin, int? userId, UpdatePostDTO post)
         {
-            throw new NotImplementedException();
+            Post? isPost = await _repo.GetById(id);
+            if (isPost == null) return null;
+
+            if (isPost.UserId != userId && !isAdmin)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            if (post.Title != null) isPost.Title = post.Title;
+            if (post.Content != null) isPost.Content = post.Content;
+            isPost.UpdatedAt = DateTime.UtcNow;
+
+            return await _repo.Update(isPost);
+            
         }
     }
 }

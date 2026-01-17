@@ -10,7 +10,7 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<Post> Create(Post post);
 
-        Task<Post> Update(int id);
+        Task<Post> Update(Post post);
 
         Task<bool> Delete(int id);
     }

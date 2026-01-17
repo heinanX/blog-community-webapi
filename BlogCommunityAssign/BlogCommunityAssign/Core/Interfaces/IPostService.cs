@@ -1,5 +1,6 @@
 ﻿using BlogCommunityAssign.Data.DTO.Posts;
 using BlogCommunityAssign.Data.Entities;
+using System.Security.Claims;
 
 namespace BlogCommunityAssign.Core.Interfaces
 {
@@ -14,7 +15,7 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<Post> CreatePost(CreatePostDTO post, int id);
 
 
-        Task<Post?> UpdatePost(int id);
+        Task<Post?> UpdatePost(int id, bool isAdmin, int? userId, UpdatePostDTO post);
 
 
         Task<bool> DeletePost(int id);

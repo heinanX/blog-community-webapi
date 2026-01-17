@@ -40,9 +40,11 @@ namespace BlogCommunityAssign.Data.Repos
             return await _db.Posts.FindAsync(id);
         }
 
-        public async Task<Post> Update(int id)
+        public async Task<Post> Update(Post post)
         {
-            throw new NotImplementedException();
+            //_db.Posts.Update(post);
+            await _db.SaveChangesAsync();
+            return post;
         }
     }
 }

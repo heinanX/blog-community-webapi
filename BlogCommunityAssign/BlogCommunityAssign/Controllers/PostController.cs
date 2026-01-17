@@ -1,4 +1,5 @@
-﻿using BlogCommunityAssign.Core.Interfaces;
+﻿using BlogCommunityAssign.Core.Extensions;
+using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.DTO.Posts;
 using BlogCommunityAssign.Data.Entities;
@@ -58,17 +59,27 @@ namespace BlogCommunityAssign.Controllers
         }
 
 
-        //[HttpPut("update/{id}")]
-        //[Authorize]
-        //public async Task<ActionResult> Put(int id, UpdatePostDTO postDto)
-        //{
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult> Put(int id, UpdatePostDTO postDto)
+        {
+            try
+            {
+                int? userId = User.GetUserId();
+                if (userId == null) return Unauthorized();
+                bool isAdmin = User.IsAdmin();
 
-        //    Post? updated = await _service.UpdatePost(id, postDto);
-        //    if (updated == null) return NotFound();
+                Post? updated = await _service.UpdatePost(id, isAdmin, userId, postDto);
+                if (updated == null) return NotFound();
 
-        //    return NoContent();
+                return Ok(updated.Title);
 
-        //}
+            } catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+
+        }
 
 
         [HttpDelete("delete/{id}")]
