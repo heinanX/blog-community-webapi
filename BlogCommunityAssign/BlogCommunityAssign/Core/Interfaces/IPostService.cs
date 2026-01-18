@@ -1,6 +1,5 @@
 ﻿using BlogCommunityAssign.Data.DTO.Posts;
 using BlogCommunityAssign.Data.Entities;
-using System.Security.Claims;
 
 namespace BlogCommunityAssign.Core.Interfaces
 {
@@ -21,5 +20,6 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<bool> DeletePost(int id, int userId, bool isAdmin);
 
         Task<List<PostDTO>?> SearchPostByTitle(string? searchTerm);
+        Task<List<PostDTO>?> SearchPostByCategory(string? searchTerm);
     }
 }

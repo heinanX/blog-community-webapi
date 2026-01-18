@@ -42,6 +42,13 @@ namespace BlogCommunityAssign.Data.Repos
                 .Where(p => p.Title.Contains(searchTerm))
                 .ToListAsync();
         }
+        public async Task<List<Post>> SearchByCategory(string searchTerm)
+        {
+            return await _db.Posts
+                    .Include(p => p.Categories)
+                    .Where(p => p.Categories.Any(c => c.CategoryName == searchTerm))
+                    .ToListAsync();
+        }
 
         public async Task<Post> Update(Post post)
         {

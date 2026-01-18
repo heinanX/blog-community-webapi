@@ -85,6 +85,17 @@ namespace BlogCommunityAssign.Core.Services
                  .Select(p => new PostDTO(p))
                  .ToList();
         }
+        public async Task<List<PostDTO>?> SearchPostByCategory(string? searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm)) throw new InvalidOperationException("Search field cannot be empty");
+            
+            List<Post> posts = await _repo.SearchByCategory(searchTerm);
+            if (posts.Count == 0) return null;
+
+            return posts
+                 .Select(p => new PostDTO(p))
+                 .ToList();
+        }
 
         public async Task<Post?> UpdatePost(int id, bool isAdmin, int? userId, UpdatePostDTO dto)
         {

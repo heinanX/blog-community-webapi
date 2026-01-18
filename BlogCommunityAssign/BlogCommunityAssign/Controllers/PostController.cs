@@ -1,6 +1,5 @@
 ﻿using BlogCommunityAssign.Core.Extensions;
 using BlogCommunityAssign.Core.Interfaces;
-using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.DTO.Posts;
 using BlogCommunityAssign.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -99,12 +98,28 @@ namespace BlogCommunityAssign.Controllers
 
         }
 
-        [HttpGet("search/")]
-        public async Task<ActionResult> Search(string? q)
+        [HttpGet("title/search")]
+        public async Task<ActionResult> SearchTitle(string? q)
         {
             try
             {
                 List<PostDTO>? posts = await _service.SearchPostByTitle(q);
+                if (posts == null) return NotFound($"No match found");
+
+                return Ok(posts);
+
+            } catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("category/search")]
+        public async Task<ActionResult> SearchCategory(string? cat)
+        {
+            try
+            {
+                List<PostDTO>? posts = await _service.SearchPostByCategory(cat);
                 if (posts == null) return NotFound($"No match found");
 
                 return Ok(posts);

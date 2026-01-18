@@ -222,7 +222,13 @@ inside 'NullifyUserComments' and 'NullifyUserPosts'
 
 ---
 
-# Task 3: Create CRUD operations for Comment
+# Task 3: Add search function
+- add support for title search
+- add support for category search
+
+---
+
+# Task 4: Create CRUD operations for Comment
 - write Create operation
 - write Update operation
 - write Get Comment by Id operation
@@ -240,9 +246,6 @@ Stuff to be completed for the assignment
 - restrict anonymous users
 - restrict user from commenting their own posts
 
-# Task: Add search function
-- add support for title search
-- add support for category search
 
 
 
