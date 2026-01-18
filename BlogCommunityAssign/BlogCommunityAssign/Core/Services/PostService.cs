@@ -74,27 +74,30 @@ namespace BlogCommunityAssign.Core.Services
             return await _repo.GetById(id);
         }
 
-        public async Task<List<PostDTO>?> SearchPostByTitle(string? searchTerm)
+        public async Task<List<PostDTO>?> SearchPost(string? searchTerm, string? queryItem)
         {
-            if (string.IsNullOrEmpty(searchTerm)) throw new InvalidOperationException("Search field cannot be empty");
-            
-            List<Post> posts = await _repo.SearchByTitle(searchTerm);
-            if (posts.Count == 0) return null;
+            List<Post> posts = new List<Post>();
+            var searchActions = new Dictionary<string, Func<string, Task<List<Post>>>>()
+            {
+                { "title", async term => await _repo.SearchByTitle(term) },
+                { "category", async term => await _repo.SearchByCategory(term) }
+            };
 
-            return posts
+            if (string.IsNullOrEmpty(searchTerm)) throw new InvalidOperationException("Search field cannot be empty!");
+            if (string.IsNullOrEmpty(queryItem)) throw new InvalidOperationException("Item field must provide a query item!");
+
+            if (searchActions.ContainsKey(queryItem!))
+            {
+                posts = await searchActions[queryItem!](searchTerm);
+                if (posts.Count == 0) return null;
+
+                return posts
                  .Select(p => new PostDTO(p))
                  .ToList();
-        }
-        public async Task<List<PostDTO>?> SearchPostByCategory(string? searchTerm)
-        {
-            if (string.IsNullOrEmpty(searchTerm)) throw new InvalidOperationException("Search field cannot be empty");
-            
-            List<Post> posts = await _repo.SearchByCategory(searchTerm);
-            if (posts.Count == 0) return null;
-
-            return posts
-                 .Select(p => new PostDTO(p))
-                 .ToList();
+            } else
+            {
+                return null;
+            }
         }
 
         public async Task<Post?> UpdatePost(int id, bool isAdmin, int? userId, UpdatePostDTO dto)

@@ -98,12 +98,12 @@ namespace BlogCommunityAssign.Controllers
 
         }
 
-        [HttpGet("title/search")]
-        public async Task<ActionResult> SearchTitle(string? q)
+        [HttpGet("search")]
+        public async Task<ActionResult> SearchTitle(string? q, string? queryItem)
         {
             try
             {
-                List<PostDTO>? posts = await _service.SearchPostByTitle(q);
+                List<PostDTO>? posts = await _service.SearchPost(q, queryItem);
                 if (posts == null) return NotFound($"No match found");
 
                 return Ok(posts);
@@ -113,23 +113,6 @@ namespace BlogCommunityAssign.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpGet("category/search")]
-        public async Task<ActionResult> SearchCategory(string? cat)
-        {
-            try
-            {
-                List<PostDTO>? posts = await _service.SearchPostByCategory(cat);
-                if (posts == null) return NotFound($"No match found");
-
-                return Ok(posts);
-
-            } catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
 
     }
 }

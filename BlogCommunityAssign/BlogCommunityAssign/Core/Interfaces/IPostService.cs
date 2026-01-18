@@ -19,7 +19,6 @@ namespace BlogCommunityAssign.Core.Interfaces
 
         Task<bool> DeletePost(int id, int userId, bool isAdmin);
 
-        Task<List<PostDTO>?> SearchPostByTitle(string? searchTerm);
-        Task<List<PostDTO>?> SearchPostByCategory(string? searchTerm);
+        Task<List<PostDTO>?> SearchPost(string? searchTerm, string? queryItem);
     }
 }
