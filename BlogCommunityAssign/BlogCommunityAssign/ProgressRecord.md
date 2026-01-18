@@ -218,6 +218,11 @@ inside 'NullifyUserComments' and 'NullifyUserPosts'
 
 ---
 
+
+
+
+Otherwise completed:
+
 # Task 4: Cleanup and restructuring 'create post' - use static getUserId();
 
 --- --- --- --- --- ---

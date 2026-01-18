@@ -1,6 +1,7 @@
 ﻿using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO.Categories;
 using BlogCommunityAssign.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCommunityAssign.Controllers
@@ -26,7 +27,7 @@ namespace BlogCommunityAssign.Controllers
 
         }
 
-        [HttpGet("{id}")] //by ID
+        [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
 
@@ -39,6 +40,7 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpPost("create")]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult> Post(CreateCategoryDTO category)
         {
 
@@ -50,6 +52,7 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpPut("update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Put(int id, UpdateCategoryDTO category)
         {
 
@@ -62,6 +65,7 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             

@@ -31,7 +31,7 @@ namespace BlogCommunityAssign.Controllers
 
         }
 
-        [HttpGet("{id}")] //by ID
+        [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
 
