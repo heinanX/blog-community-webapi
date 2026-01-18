@@ -2,6 +2,7 @@
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace BlogCommunityAssign.Data.Repos
 {
@@ -14,7 +15,7 @@ namespace BlogCommunityAssign.Data.Repos
         {
             _db = context;
         }
-        
+
         public async Task Register(User user)
         {
             _db.Add(user);
@@ -42,12 +43,15 @@ namespace BlogCommunityAssign.Data.Repos
 
         public async Task<User?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Users.FindAsync(id);
         }
 
-        public async Task<User?> GetCompleteUserById(int id)
+        public async Task<User?> GetDetailedById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Users
+                .Include(u => u.Comments)
+                .Include(u => u.Posts)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User?> GetUserByEmailorUsername(string identifier)
@@ -74,9 +78,25 @@ namespace BlogCommunityAssign.Data.Repos
             throw new NotImplementedException();
         }
 
-        public async Task<User> Update(int id)
+        public async Task Update()
         {
-            throw new NotImplementedException();
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<User?> IsExistingEmail(string email)
+        {
+            return await _db.Users
+                 .FirstOrDefaultAsync(u =>
+                 u.Email == email
+                 );
+        }
+
+        public async Task<User?> IsExistingUsername(string username)
+        {
+            return await _db.Users
+                .FirstOrDefaultAsync(u =>
+                u.Username == username
+                );
         }
     }
 }

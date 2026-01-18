@@ -1,4 +1,5 @@
 ﻿using BlogCommunityAssign.Data.DTO.Categories;
+using BlogCommunityAssign.Data.DTO.Comments;
 using BlogCommunityAssign.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +8,7 @@ namespace BlogCommunityAssign.Data.DTO.Posts
     public class PostWithCommentsDTO
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public User? User { get; set; }
 
         public string Title { get; set; }
@@ -18,7 +19,7 @@ namespace BlogCommunityAssign.Data.DTO.Posts
 
 
         public ICollection<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
-        public ICollection<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
+        public ICollection<CommentSummaryDTO> Comments { get; set; } = new List<CommentSummaryDTO>();
 
         public PostWithCommentsDTO(Post post)
         {
@@ -30,7 +31,7 @@ namespace BlogCommunityAssign.Data.DTO.Posts
             UpdatedAt = post.UpdatedAt;
 
             Categories = post.Categories.Select(c => new CategoryDTO(c)).ToList();
-            Comments = post.Comments.Select(c => new CommentDTO(c)).ToList();
+            Comments = post.Comments.Select(c => new CommentSummaryDTO(c)).ToList();
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using BlogCommunityAssign.Core.Interfaces;
+﻿using BlogCommunityAssign.Core.Extensions;
+using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO;
+using BlogCommunityAssign.Data.DTO.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BlogCommunityAssign.Controllers
 {
@@ -11,73 +14,129 @@ namespace BlogCommunityAssign.Controllers
     {
         private readonly IUserService _service;
 
-
         public UserController(IUserService service)
         {
             _service = service;
         }
 
 
-        //private readonly UserRepo _userRepo;
-
-        //public UserController(UserRepo userRepo)
-        //{
-        //    _userRepo = userRepo;
-        //}
-
-        //[HttpGet]
-        //public IActionResult GetUsers()
-        //{
-        //    List<User> users = _userRepo.GetAllUsers();
-        //    return Ok(users);
-        //}
-
-        //[HttpGet]
-        //public IActionResult GetUsersAndComments()
-        //{
-        //    List<UserDTO> users = _userRepo.GetAllUsersWithComments();
-        //    return Ok(users);
-        //}
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> GetUsersAndComments()
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<UserDTO>>> Get()
         {
-            List<UserDTO> users = await _service.GetAllUsersWithComments();
+            List<UserDTO> users = await _service.GetAllUsers();
             return Ok(users);
+        }
+        //[HttpGet]
+        //public async Task<ActionResult<List<UserDTO>>> GetUsersAndComments()
+        //{
+        //    List<UserDTO> users = await _service.GetAllUsersWithComments();
+        //    return Ok(users);
+        //}
+
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null) return Unauthorized();
+                int userId = int.Parse(userIdClaim);
+                bool isAdmin = User.IsAdmin();
+
+                UserDTO? user = await _service.GetUserById(id, userId, isAdmin);
+                if (user == null) return NotFound();
+
+                return Ok(user);
+            } catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
 
-        //[HttpGet("{id}")] //by ID
-        //public IActionResult GetUserById(int id)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet("details/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> GetDetailsById(int id)
+        {
+            UserWithPostsAndCommentsDTO? detailedUser = await _service.GetDetailedUserById(id);
+            if (detailedUser == null) return NotFound();
+
+            return Ok(detailedUser);
+        }
 
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser(RegisterNewUserDTO newUserDTO)
+        public async Task<ActionResult> RegisterUser(RegisterUserDTO newUserDTO)
         {
-            UserDTO user = await _service.CreateUser(newUserDTO);
-
-            return StatusCode(201, new
+            try
             {
-                message = "User created successfully",
-                user
-            });
+                UserDTO user = await _service.CreateUser(newUserDTO);
+
+                return Created($"{user.Username} created", user);
+
+            } catch (InvalidOperationException ex) {
+
+                return BadRequest(ex.Message);
+            }
+
         }
 
 
-        [HttpPut("/update-user/{id}")]
+        [HttpPut("update/{id}")]
         [Authorize]
-        public IActionResult UpdateUser(int id)
+        public async Task<ActionResult> UpdateUser(int id, UpdateUserDTO userDto)
         {
-            return Ok($"{id} updated");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null) return Unauthorized();
+
+                int userId = int.Parse(userIdClaim);
+                bool isAdmin = User.IsAdmin();
+
+                await _service.UpdateUser(id, userId, isAdmin, userDto);
+
+                return NoContent();
+                //return NoContent($"User {id} updated!", user);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
-        //[HttpDelete]
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+            bool isAdmin = User.IsAdmin();
+
+            int? deleted = await _service.DeleteUser(id, userId, isAdmin);
+            if (deleted == null) return NotFound();
+
+            return Ok($"user {deleted} deleted!");
+
+        }
 
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginCredentialsDTO credentials)
+        public async Task<ActionResult> Login(LoginUserDTO credentials)
         {
             UserDTO? user = await _service.Login(credentials);
 
@@ -89,9 +148,8 @@ namespace BlogCommunityAssign.Controllers
 
             tokenUser.Token = token;
 
-            return Ok(tokenUser); // also where you add a token I guess?
+            return Ok(tokenUser);
         }
-
 
     }
 }

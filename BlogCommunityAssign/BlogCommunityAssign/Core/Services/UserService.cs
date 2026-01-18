@@ -1,6 +1,7 @@
 ﻿using BlogCommunityAssign.Core.Configuration;
 using BlogCommunityAssign.Core.Interfaces;
 using BlogCommunityAssign.Data.DTO;
+using BlogCommunityAssign.Data.DTO.Users;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
 using Microsoft.Extensions.Options;
@@ -24,10 +25,10 @@ namespace BlogCommunityAssign.Core.Services
             _jwt = jwt.Value;
         }
 
-        public async Task<UserDTO> CreateUser(RegisterNewUserDTO newUserDTO)
+        public async Task<UserDTO> CreateUser(RegisterUserDTO newUserDTO)
         {
             User? existingUser = await _repo.IsExistingEmailorUsername(newUserDTO.Username, newUserDTO.Email);
-            if (existingUser != null) throw new Exception("username or email is already taken");
+            if (existingUser != null) throw new InvalidOperationException("username or email is already taken");
 
             User newUser = new User
             {
@@ -43,9 +44,18 @@ namespace BlogCommunityAssign.Core.Services
 
         }
 
-        public Task<bool> DeleteUser(int id)
+        public async Task<int?> DeleteUser(int id, int userId, bool isAdmin)
         {
-            throw new NotImplementedException();
+            User? existingUser = await _repo.GetById(id);
+            if (existingUser == null) return null;
+
+            if (existingUser.Id != userId && !isAdmin)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            await _repo.Delete(id);
+            return id;
         }
 
         public string GenerateToken(AuthResponseDTO user)
@@ -73,9 +83,10 @@ namespace BlogCommunityAssign.Core.Services
             return tokenString;
         }
 
-        public Task<List<User>> GetAllUsers()
+        public async Task<List<UserDTO>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            List<User> users = await _repo.GetAll();
+            return users.Select(u => new UserDTO(u)).ToList();
         }
 
         public async Task<List<UserDTO>> GetAllUsersWithComments()
@@ -86,17 +97,31 @@ namespace BlogCommunityAssign.Core.Services
 
         }
 
-        public Task<User?> GetFullUserById(int id)
+        public async Task<UserWithPostsAndCommentsDTO?> GetDetailedUserById(int id)
         {
-            throw new NotImplementedException();
+            User? user = await _repo.GetDetailedById(id);
+            if (user == null) return null;
+
+            UserWithPostsAndCommentsDTO detailedUser = new UserWithPostsAndCommentsDTO(user);
+            return detailedUser;
+
         }
 
-        public Task<User?> GetUserById(int id)
+        public async Task<UserDTO?> GetUserById(int id, int userId, bool isAdmin)
         {
-            throw new NotImplementedException();
+            User? user = await _repo.GetById(id);
+            if (user == null) return null;
+
+            if (user.Id == userId) throw new UnauthorizedAccessException();
+
+            
+            UserDTO userDto = new UserDTO (user);
+
+            return userDto;
+
         }
 
-        public async Task<UserDTO?> Login(LoginCredentialsDTO credentials)
+        public async Task<UserDTO?> Login(LoginUserDTO credentials)
         {
             User? user = await _repo.GetUserByEmailorUsername(credentials.Identifier);
 
@@ -116,9 +141,39 @@ namespace BlogCommunityAssign.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> UpdateUser(int id)
+        public async Task UpdateUser(int id, int userId, bool isAdmin, UpdateUserDTO userDto)
         {
-            throw new NotImplementedException();
+            User? existingUser = await _repo.GetById(id);
+            if (existingUser == null) throw new KeyNotFoundException($"Username with {id} not found");
+
+            if (existingUser.Id != userId && !isAdmin)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            
+            if (userDto.Username != null && userDto.Username != existingUser.Username)
+            {
+                User? usernameTaken = await _repo.IsExistingUsername(userDto.Username!);
+                if (usernameTaken != null) throw new InvalidOperationException("Username already taken");
+
+                existingUser.Username = userDto.Username;
+            }
+
+            if (userDto.Email != null && userDto.Email != existingUser.Email) 
+            {
+                User? emailTaken = await _repo.IsExistingEmail(userDto.Email!);
+                if (emailTaken != null) throw new InvalidOperationException("Email already taken");
+                existingUser.Email = userDto.Email;
+            }
+                
+            
+            if (userDto.Password != null)
+            {
+                existingUser.Password = _passwordService.HashPassword(userDto.Password);
+            }
+
+            await _repo.Update();
         }
     }
 }

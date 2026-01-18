@@ -1,9 +1,9 @@
-﻿using BlogCommunityAssign.Data.DTO.Posts;
+﻿using BlogCommunityAssign.Data.DTO.Comments;
 using BlogCommunityAssign.Data.Entities;
 
-namespace BlogCommunityAssign.Data.DTO
+namespace BlogCommunityAssign.Data.DTO.Users
 {
-    public class FullUserDTO
+    public class UserDTO
     {
         public int Id { get; set; }
         public string Username { get; set; } = "";
@@ -11,18 +11,13 @@ namespace BlogCommunityAssign.Data.DTO
         public bool IsAdmin { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public List<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
-        public List<PostDTO> Posts { get; set; } = new List<PostDTO>();
-
-        public FullUserDTO(User user)
+        public UserDTO(User user)
         {
             Id = user.Id;
             Username = user.Username;
             Email = user.Email;
             CreatedAt = user.CreatedAt;
             IsAdmin = user.IsAdmin;
-            Comments = user.Comments.Select(c => new CommentDTO(c)).ToList();
-            Posts = user.Posts.Select(c => new PostDTO(c)).ToList();
         }
     }
 }

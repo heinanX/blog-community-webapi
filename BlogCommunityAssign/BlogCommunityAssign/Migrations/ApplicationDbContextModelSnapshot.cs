@@ -38,18 +38,6 @@ namespace BlogCommunityAssign.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryName = "adventure"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryName = "iykyk"
-                        });
                 });
 
             modelBuilder.Entity("BlogCommunityAssign.Data.Entities.Comment", b =>
@@ -84,17 +72,6 @@ namespace BlogCommunityAssign.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "This is just a dummy comment",
-                            CreatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 65, DateTimeKind.Utc).AddTicks(9037),
-                            PostId = 1,
-                            UpdatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 65, DateTimeKind.Utc).AddTicks(9167),
-                            UserId = 3
-                        });
                 });
 
             modelBuilder.Entity("BlogCommunityAssign.Data.Entities.Post", b =>
@@ -121,7 +98,7 @@ namespace BlogCommunityAssign.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -129,17 +106,6 @@ namespace BlogCommunityAssign.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "This is the first blog post",
-                            CreatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 64, DateTimeKind.Utc).AddTicks(974),
-                            Title = "Test Title",
-                            UpdatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 64, DateTimeKind.Utc).AddTicks(1182),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("BlogCommunityAssign.Data.Entities.User", b =>
@@ -174,35 +140,6 @@ namespace BlogCommunityAssign.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 63, DateTimeKind.Utc).AddTicks(9180),
-                            Email = "imtehboss@yahoo.com",
-                            IsAdmin = true,
-                            Password = "admin",
-                            Username = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 63, DateTimeKind.Utc).AddTicks(9938),
-                            Email = "imtehtest@yahoo.com",
-                            IsAdmin = false,
-                            Password = "test",
-                            Username = "test"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2026, 1, 11, 16, 22, 19, 63, DateTimeKind.Utc).AddTicks(9941),
-                            Email = "imtehdummy@yahoo.com",
-                            IsAdmin = false,
-                            Password = "dummy",
-                            Username = "dummy"
-                        });
                 });
 
             modelBuilder.Entity("CategoryPost", b =>
@@ -218,13 +155,6 @@ namespace BlogCommunityAssign.Migrations
                     b.HasIndex("PostsId");
 
                     b.ToTable("CategoryPost");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoriesId = 1,
-                            PostsId = 1
-                        });
                 });
 
             modelBuilder.Entity("BlogCommunityAssign.Data.Entities.Comment", b =>
@@ -249,9 +179,7 @@ namespace BlogCommunityAssign.Migrations
                 {
                     b.HasOne("BlogCommunityAssign.Data.Entities.User", "User")
                         .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

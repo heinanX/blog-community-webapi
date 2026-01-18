@@ -7,6 +7,8 @@ namespace BlogCommunityAssign.Data.Interfaces
     {
         Task<User?> GetUserByEmailorUsername(string identifier);
         Task<User?> IsExistingEmailorUsername(string username, string email);
+        Task<User?> IsExistingEmail(string email);
+        Task<User?> IsExistingUsername(string username);
 
         Task<bool> Logout(int id);
 
@@ -16,11 +18,11 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<User?> GetById(int id);
 
-        Task<User?> GetCompleteUserById(int id);
+        Task<User?> GetDetailedById(int id);
 
         Task Register(User user);
 
-        Task<User> Update(int id);
+        Task Update();
 
         Task<bool> Delete(int id);
     }

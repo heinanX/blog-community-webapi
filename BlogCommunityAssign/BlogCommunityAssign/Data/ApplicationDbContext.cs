@@ -23,37 +23,6 @@ namespace BlogCommunityAssign.Data
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
-            // Seed Data
-            modelBuilder.Entity<Category>().HasData(
-                new Category {Id = 1, CategoryName = "adventure" },
-                new Category {Id = 2, CategoryName = "iykyk" }
-                );
-
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Username = "admin", Email = "imtehboss@yahoo.com", IsAdmin = true, Password = "admin" },
-                new User { Id = 2, Username = "test", Email = "imtehtest@yahoo.com", IsAdmin = false, Password = "test" },
-                new User { Id = 3, Username = "dummy", Email = "imtehdummy@yahoo.com", IsAdmin = false, Password = "dummy" }
-                );
-
-
-            modelBuilder.Entity<Post>().HasData(
-                new Post { Id = 1, Title = "Test Title", Content = "This is the first blog post", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, UserId = 2 }
-                );
-
-            modelBuilder.Entity<Post>()
-                .HasMany(p => p.Categories)
-                .WithMany(c => c.Posts)
-                .UsingEntity(j => j.HasData(
-                new { PostsId = 1, CategoriesId = 1, }
-                ));
-
-
-            modelBuilder.Entity<Comment>().HasData(
-                new Comment { Id = 1, Content = "This is just a dummy comment", UserId = 3, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, PostId = 1}
-                );
-
         }
     }
 }

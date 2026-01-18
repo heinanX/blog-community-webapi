@@ -170,17 +170,37 @@ x Current code clear old categories before applying updated ones => write logic 
 - Finished with no remarks
 
 # Task 5: Create CRUD operations for User
+- write Update operation
 - write ReadAll operation
-- write Get Post by Id operation
-- write Delete operation
 - write Create operation -- check old logic
+- write Get Full User by Id operation
 
-# Task 6: Create a Log out method
+Task 6: Delete operation
+- write partial Delete operation
+- Add new migration to make UserId inside Post nullable to make user removable
+ 
+Lesson learned: To avoid annoying warnings do not put dynamic values such as new DateTime inside seed data
+as this changes each time it's built
 
+Incident Report: Migrations wouldn't complete because of the dynamic values set inside seed data, so I removed
+said code but it still didn't work. Inside every migration the dynamic values still remained. 
+Removed previous migrations, did a clean and a build but Entity framework kept writing the old data.
+Terminated all connections, rebooted VS, and computer, but the file still migrated old data.
+Because it's just a school project and I have a daedline, I decided to drop the db, and recreate it,
+but even then I kept getting the same error.
+After another reboot and a new set up of another db inside a new project, I tried migrating the current db inside
+this project, and then the ApplicationDbContext held all data. So I suspect there was an error when I saved my
+Context, and it used the old state of the file whenever I tried to add a new migration.
+Did a complete re-build of database and its data.
+
+
+Next Up: Finish logic inside Delete operation
+- reassign userId with null in post and comment
 
 --- --- --- --- --- ---
 Stuff to be completed for the assignment
 
+# Task 6: Create a Log out method
 # Task 4: Cleanup and restructuring 'create post' - use static getUserId();
 # Task : Add logic for Logged in User to comment another user's post
 - restrict anonymous users
