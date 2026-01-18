@@ -36,6 +36,13 @@ namespace BlogCommunityAssign.Data.Repos
             return await _db.Posts.FindAsync(id);
         }
 
+        public async Task<List<Post>> SearchByTitle(string searchTerm)
+        {
+            return await _db.Posts
+                .Where(p => p.Title.Contains(searchTerm))
+                .ToListAsync();
+        }
+
         public async Task<Post> Update(Post post)
         {
             //_db.Posts.Update(post);

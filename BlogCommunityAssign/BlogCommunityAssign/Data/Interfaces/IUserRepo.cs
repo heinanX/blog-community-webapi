@@ -13,8 +13,6 @@ namespace BlogCommunityAssign.Data.Interfaces
         
         Task<User?> IsExistingUsername(string username);
 
-        Task<bool> Logout(int id);
-
         Task<List<User>> GetAll();
 
         Task<List<User>> GetAllWithComments();

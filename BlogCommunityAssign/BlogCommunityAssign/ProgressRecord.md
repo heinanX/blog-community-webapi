@@ -218,7 +218,15 @@ inside 'NullifyUserComments' and 'NullifyUserPosts'
 
 ---
 
+# Task 2: Add restrictions to creating, updating and deleting a Category
 
+---
+
+# Task 3: Create CRUD operations for Comment
+- write Create operation
+- write Update operation
+- write Get Comment by Id operation
+- write Delete Comment operation
 
 
 Otherwise completed:
@@ -236,7 +244,7 @@ Stuff to be completed for the assignment
 - add support for title search
 - add support for category search
 
-# Task: Add restrictions to creating, updating and deleting a Category
+
 
 --- --- --- --- --- ---
 Future Tasks to improve project:

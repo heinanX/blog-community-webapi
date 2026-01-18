@@ -99,6 +99,22 @@ namespace BlogCommunityAssign.Controllers
 
         }
 
+        [HttpGet("search/")]
+        public async Task<ActionResult> Search(string? q)
+        {
+            try
+            {
+                List<PostDTO>? posts = await _service.SearchPostByTitle(q);
+                if (posts == null) return NotFound($"No match found");
+
+                return Ok(posts);
+
+            } catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

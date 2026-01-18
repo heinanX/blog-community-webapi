@@ -13,5 +13,7 @@ namespace BlogCommunityAssign.Data.Interfaces
         Task<Post> Update(Post post);
 
         Task Delete(Post post);
+
+        Task<List<Post>> SearchByTitle(string searchTerm);
     }
 }

@@ -73,11 +73,6 @@ namespace BlogCommunityAssign.Data.Repos
                  );
         }
 
-        public async Task<bool> Logout(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Update()
         {
             await _db.SaveChangesAsync();
