@@ -6,8 +6,11 @@ namespace BlogCommunityAssign.Data.Interfaces
     public interface IUserRepo
     {
         Task<User?> GetUserByEmailorUsername(string identifier);
+
         Task<User?> IsExistingEmailorUsername(string username, string email);
+        
         Task<User?> IsExistingEmail(string email);
+        
         Task<User?> IsExistingUsername(string username);
 
         Task<bool> Logout(int id);
@@ -15,6 +18,10 @@ namespace BlogCommunityAssign.Data.Interfaces
         Task<List<User>> GetAll();
 
         Task<List<User>> GetAllWithComments();
+
+        Task NullifyUserPosts(int userId);
+        
+        Task NullifyUserComments(int userId);
 
         Task<User?> GetById(int id);
 
@@ -24,6 +31,6 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task Update();
 
-        Task<bool> Delete(int id);
+        void Delete(User existingUser);
     }
 }

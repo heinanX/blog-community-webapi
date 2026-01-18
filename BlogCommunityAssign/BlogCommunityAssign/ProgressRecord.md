@@ -194,14 +194,35 @@ Context, and it used the old state of the file whenever I tried to add a new mig
 Did a complete re-build of database and its data.
 
 
-Next Up: Finish logic inside Delete operation
+--- Next Up: Finish logic inside Delete operation
 - reassign userId with null in post and comment
+
+.
+.
+.
+
+
+1/18/26
+
+# Task 1: Finish Delete call
+- Add Reassign UserId FKs to null
+
+Note: Assignment said option to delete User. Typically I'd chose to do a soft-delete by making the user inactive,
+but this assignment called for a complete deletion, so in order to do that I loop through a posts and comments
+where the userid == user to be deleted, reassign that id to null to sever the relationship,
+then I delete the user from the database.
+
+Code improvement done:
+Instead of loading resources from db, looping and then nullify the values, I can assign the null value in the database call
+inside 'NullifyUserComments' and 'NullifyUserPosts'
+
+---
+
+# Task 4: Cleanup and restructuring 'create post' - use static getUserId();
 
 --- --- --- --- --- ---
 Stuff to be completed for the assignment
 
-# Task 6: Create a Log out method
-# Task 4: Cleanup and restructuring 'create post' - use static getUserId();
 # Task : Add logic for Logged in User to comment another user's post
 - restrict anonymous users
 - restrict user from commenting their own posts

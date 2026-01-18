@@ -4,6 +4,7 @@ using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.DTO.Users;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -54,7 +55,11 @@ namespace BlogCommunityAssign.Core.Services
                 throw new UnauthorizedAccessException();
             }
 
-            await _repo.Delete(id);
+            await _repo.NullifyUserPosts(id);
+            await _repo.NullifyUserComments(id);
+            _repo.Delete(existingUser);
+            await _repo.Update();
+
             return id;
         }
 

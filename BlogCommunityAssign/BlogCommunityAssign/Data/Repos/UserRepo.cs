@@ -22,9 +22,9 @@ namespace BlogCommunityAssign.Data.Repos
             await _db.SaveChangesAsync();
         }
 
-        public async Task<bool> Delete(int id)
+        public void Delete(User user)
         {
-            throw new NotImplementedException();
+            _db.Remove(user);
         }
 
 
@@ -97,6 +97,20 @@ namespace BlogCommunityAssign.Data.Repos
                 .FirstOrDefaultAsync(u =>
                 u.Username == username
                 );
+        }
+
+        public async Task NullifyUserPosts(int userId)
+        {
+            await _db.Posts
+                   .Where(p => p.UserId == userId)
+                   .ForEachAsync(p => p.UserId = null);
+        }
+
+        public async Task NullifyUserComments(int userId)
+        {
+            await _db.Comments
+                    .Where(c => c.UserId == userId)
+                    .ForEachAsync(c => c.UserId = null);
         }
     }
 }
