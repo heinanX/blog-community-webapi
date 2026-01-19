@@ -116,6 +116,8 @@ I decided to go with a nuget package I'm already familiar with: BCrypt
 
 1/16/26
 
+# Task : Cleanup and restructuring 'create post' - use static getUserId();
+
 # Task 1: Create all CRUD operations for Category
 - write ReadAll operation
 - write Get Category by Id operation
@@ -226,26 +228,30 @@ inside 'NullifyUserComments' and 'NullifyUserPosts'
 - add support for title search
 - add support for category search
 
+```Future improvement:```
+Add more search criterias, and if queryItem is left blank, search title and post by default
+
 ---
 
 # Task 4: Create CRUD operations for Comment
 - write Create operation
+- restrict anonymous users
+- restrict user from commenting their own posts
+
+.
+.
+.
+
+1/19/26
+
+# Task 1: Finish creating CRUD operations for Comment
 - write Update operation
 - write Get Comment by Id operation
 - write Delete Comment operation
 
 
-Otherwise completed:
-
-# Task 4: Cleanup and restructuring 'create post' - use static getUserId();
-
 --- --- --- --- --- ---
 Stuff to be completed for the assignment
-
-# Task : Add logic for Logged in User to comment another user's post
-- restrict anonymous users
-- restrict user from commenting their own posts
-
 
 
 
@@ -253,3 +259,7 @@ Stuff to be completed for the assignment
 Future Tasks to improve project:
 
 # Task: When saving strings to the database, make them lower case before saving
+
+# Task: Add more search criterias to 'SearchPost', and if queryItem == blank, search title and post by default
+
+# Task: Add pagination to larger data fetches

@@ -1,13 +1,22 @@
 ﻿using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
+using Microsoft.Extensions.Hosting;
 
 namespace BlogCommunityAssign.Data.Repos
 {
     public class CommentRepo : ICommentRepo
     {
-        public async Task<Comment> Create(Comment comment)
+        private readonly ApplicationDbContext _db;
+        public CommentRepo(ApplicationDbContext db)
         {
-            throw new NotImplementedException();
+            _db = db;
+        }
+
+        public async Task<int> Create(Comment comment)
+        {
+            _db.Comments.Add(comment);
+            await _db.SaveChangesAsync();
+            return comment.Id;
         }
 
         public async Task<bool> Delete(int id)
@@ -25,9 +34,9 @@ namespace BlogCommunityAssign.Data.Repos
             throw new NotImplementedException();
         }
 
-        public async Task<Comment> Update(int id)
+        public async Task SaveDb()
         {
-            throw new NotImplementedException();
+            await _db.SaveChangesAsync();
         }
     }
 }

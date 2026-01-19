@@ -10,10 +10,10 @@ namespace BlogCommunityAssign.Data.Interfaces
         Task<Comment?> GetById(int id);
 
 
-        Task<Comment> Create(Comment comment);
+        Task<int> Create(Comment comment);
 
 
-        Task<Comment> Update(int id);
+        Task SaveDb();
 
 
         Task<bool> Delete(int id);

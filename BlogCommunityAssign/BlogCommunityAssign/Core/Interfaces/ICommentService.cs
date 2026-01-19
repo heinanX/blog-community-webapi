@@ -1,4 +1,5 @@
-﻿using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.DTO.Comments;
+using BlogCommunityAssign.Data.Entities;
 
 namespace BlogCommunityAssign.Core.Interfaces
 {
@@ -10,7 +11,7 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<Comment?> GetCommentById(int id);
 
 
-        Task<Comment> CreateComment(Comment comment);
+        Task<int?> CreateComment(CreateCommentDTO comment, int postId, int? userId);
 
 
         Task<Comment> UpdateComment(int id);
