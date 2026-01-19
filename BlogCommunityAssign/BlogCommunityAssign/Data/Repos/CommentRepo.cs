@@ -1,5 +1,7 @@
-﻿using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.DTO.Comments;
+using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace BlogCommunityAssign.Data.Repos
@@ -15,23 +17,30 @@ namespace BlogCommunityAssign.Data.Repos
         public async Task<int> Create(Comment comment)
         {
             _db.Comments.Add(comment);
-            await _db.SaveChangesAsync();
+            await SaveDb();
             return comment.Id;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task Delete(Comment comment)
         {
-            throw new NotImplementedException();
+            _db.Comments.Remove(comment);
+            await SaveDb();
         }
 
         public async Task<List<Comment>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Comments
+                    .Include(c => c.User)
+                    .Include(c => c.Post)
+                    .ToListAsync();
         }
 
         public async Task<Comment?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Comments
+                .Include(c => c.User)
+                .Include(c => c.Post)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task SaveDb()

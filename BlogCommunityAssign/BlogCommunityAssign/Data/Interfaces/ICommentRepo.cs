@@ -1,4 +1,5 @@
-﻿using BlogCommunityAssign.Data.Entities;
+﻿using BlogCommunityAssign.Data.DTO.Comments;
+using BlogCommunityAssign.Data.Entities;
 
 namespace BlogCommunityAssign.Data.Interfaces
 {
@@ -16,6 +17,6 @@ namespace BlogCommunityAssign.Data.Interfaces
         Task SaveDb();
 
 
-        Task<bool> Delete(int id);
+        Task Delete(Comment comment);
     }
 }

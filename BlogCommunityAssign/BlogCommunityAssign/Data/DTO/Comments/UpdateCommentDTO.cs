@@ -8,6 +8,5 @@ namespace BlogCommunityAssign.Data.DTO.Comments
         [Required]
         [MaxLength(1000)]
         public string Content { get; set; } = "";
-        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -15,12 +15,12 @@ namespace BlogCommunityAssign.Core.Services
             _repo = repo;
         }
 
-        public async Task<int?> CreateComment(CreateCommentDTO comment, int postId, int? userId)
+        public async Task<int> CreateComment(CreateCommentDTO comment, int postId, int? userId)
         {
             Post? validPostId = await _postRepo.GetById(postId);
             if (validPostId == null) throw new KeyNotFoundException("Post not found.");
 
-            if (validPostId.User?.Id == userId) throw new UnauthorizedAccessException("You cannot comment on your own post.");
+            if (validPostId.UserId == userId) throw new UnauthorizedAccessException("You cannot comment on your own post.");
 
             Comment newComment = new Comment
             {
@@ -35,24 +35,44 @@ namespace BlogCommunityAssign.Core.Services
             
         }
 
-        public Task<bool> DeleteComment(int id)
+        public async Task DeleteComment(int id, int userId, bool isAdmin)
         {
-            throw new NotImplementedException();
+            Comment? commentId = await _repo.GetById(id);
+            if (commentId == null) throw new KeyNotFoundException($"Comment with {id} not found");
+
+            if (commentId.UserId != userId && !isAdmin) throw new UnauthorizedAccessException();
+
+            await _repo.Delete(commentId);
         }
 
-        public Task<List<Comment>> GetAllComments()
+        public async Task<List<CommentDTO>> GetAllComments()
         {
-            throw new NotImplementedException();
+            List<Comment> comments = await _repo.GetAll();
+            return comments.Select(c => new CommentDTO(c)).ToList();
         }
 
-        public Task<Comment?> GetCommentById(int id)
+        public async Task<CommentDTO> GetCommentById(int id)
         {
-            throw new NotImplementedException();
+            Comment? commentId = await _repo.GetById(id);
+            if (commentId == null) throw new KeyNotFoundException($"Comment with {id} not found");
+
+            return new CommentDTO(commentId);
         }
 
-        public Task<Comment> UpdateComment(int id)
+        public async Task<CommentDTO> UpdateComment(int id, UpdateCommentDTO dto, int userId, bool isAdmin)
         {
-            throw new NotImplementedException();
+            Comment? commentId = await _repo.GetById(id);
+            if (commentId == null) throw new KeyNotFoundException($"Comment with {id} not found");
+
+            if (commentId.UserId != userId && !isAdmin) throw new UnauthorizedAccessException();
+
+            commentId.Content = dto.Content;
+            commentId.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.SaveDb();
+
+            return new CommentDTO(commentId);
+
         }
     }
 }

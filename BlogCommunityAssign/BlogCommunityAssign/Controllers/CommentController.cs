@@ -9,6 +9,7 @@ using System.Security.Claims;
 
 namespace BlogCommunityAssign.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/comments")]
     public class CommentController : ControllerBase
@@ -21,15 +22,15 @@ namespace BlogCommunityAssign.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> GetAll()
         {
-            var comments = await _service.GetAllComments();
+            List<CommentDTO> comments = await _service.GetAllComments();
             return Ok(comments);
         }
 
+
         [HttpPost("/api/posts/{postId}/comments")]
-        [Authorize]
-        public async Task<ActionResult> Post(int postId, CreateCommentDTO dto)
+        public async Task<ActionResult> Create(int postId, CreateCommentDTO dto)
         {
             try
             {
@@ -47,7 +48,71 @@ namespace BlogCommunityAssign.Controllers
 
             } catch (UnauthorizedAccessException ex)
             {
-                return Forbid(ex.Message);
+                return Unauthorized(ex.Message);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            try
+            {
+                CommentDTO comment = await _service.GetCommentById(id);
+                return Ok(comment);
+
+            } catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, UpdateCommentDTO dto)
+        {
+            try { 
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+            int userId = int.Parse(userIdClaim);
+            bool isAdmin = User.IsAdmin();
+
+            CommentDTO comment = await _service.UpdateComment(id, dto, userId, isAdmin);
+            return Ok(comment);
+        
+            } catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+
+            } catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null) return Unauthorized();
+                int userId = int.Parse(userIdClaim);
+                bool isAdmin = User.IsAdmin();
+
+                await _service.DeleteComment(id, userId, isAdmin);
+
+                return Ok($"Comment: {id}, deleted!");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 

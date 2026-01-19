@@ -73,12 +73,16 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 - Write basic CRUD methods in each interface
 - Implement all interface methods inside their respective classes
 
+---
+
 # Task 2: Add new version of Database
 - Add Required to some elements inside all models
 - Add Restrictions to some string fields inside models.
 - Add default values to some fields inside models.
 
 **Future note: Remove seed data in future updates.**
+
+---
 
 # Task 3: Work on Login method
 - Write logic to check user against database
@@ -88,6 +92,8 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 - Read up on ASP.NET CORE Identity's built in password hashing
 - Apply Identity's PasswordHasher into service layer
 
+---
+
 # Task 4: Troubleshooting PasswordHasher
 - Successfully hashed the password
 - Failed to make a successful verification
@@ -95,6 +101,8 @@ Solution: Added DTOs to break the circular navigation between the two models thu
 
 Solution: With little to no documentation other than Microsoft's own,
 I decided to go with a nuget package I'm already familiar with: BCrypt
+
+---
 
 # Task 5: Implementing BCrypt to hash passwords before they're saved to DB
 - Successful login
@@ -118,6 +126,8 @@ I decided to go with a nuget package I'm already familiar with: BCrypt
 
 # Task : Cleanup and restructuring 'create post' - use static getUserId();
 
+---
+
 # Task 1: Create all CRUD operations for Category
 - write ReadAll operation
 - write Get Category by Id operation
@@ -130,13 +140,18 @@ I went into this project thinking I wouldn't have the need for that many DTOs so
 At this point I have so many DTOs though, that if I'd do this again, I'd use Automapper from the start and for
 easier locating, I'd have a folder structure inside the DTOs.
 
+---
+
 # Task 2: Create all CRUD operations for Post
 - write ReadAll operation
 - write Get Post by Id operation
 - write Delete operation
 
+---
 
 # Task 3: Move Category DTOs into a folder v_v;
+
+---
 
 # Task 4: Continue createing CRUD operations for Post
 - write Create operation
@@ -156,6 +171,8 @@ easier locating, I'd have a folder structure inside the DTOs.
 - Create Method to check claim for Admin role
 - Add restrictions to endpoint
 
+---
+
 # Task 2: Add Categories to Post
 - Add GetyByName Method that retrieves categories if matched with json data
 - Loop through the list and if match is found, add to Post object, if not, ignore
@@ -165,11 +182,16 @@ x Current code does not allow removal of categories, only replacements
 x Consider converting the resulting list to a HashSet for faster lookups when merging categories if processing a lot of data
 x Current code clear old categories before applying updated ones => write logic that merge old with new ones
 
+---
 
 # Task 3: Add restrictions to 'delete post' and 'create post'
 
+---
+
 # Task 4: Test all endpoints so far
 - Finished with no remarks
+
+---
 
 # Task 5: Create CRUD operations for User
 - write Update operation
@@ -177,7 +199,9 @@ x Current code clear old categories before applying updated ones => write logic 
 - write Create operation -- check old logic
 - write Get Full User by Id operation
 
-Task 6: Delete operation
+---
+
+# Task 6: Delete operation
 - write partial Delete operation
 - Add new migration to make UserId inside Post nullable to make user removable
  
@@ -245,21 +269,50 @@ Add more search criterias, and if queryItem is left blank, search title and post
 1/19/26
 
 # Task 1: Finish creating CRUD operations for Comment
-- write Update operation
+- write Get All Comments operation
 - write Get Comment by Id operation
+
+Issue faced: When calling GetAll and GetById, PostId and Username were returned as null.
+Cause: Navigation properties were not loaded because .FindAsync() bypasses LINQ and does not support Include.
+Resolution: Switched to LINQ-based queries using FirstOrDefaultAsync / Include to eagerly load related entities.
+
+Lesson learned: FindAsync is faster and suitable for simple primary-key lookups, but LINQ queries are required
+when navigation properties are needed.
+
+---
+
+# Task 2: Create comment bug --user could comment their own post, forbid error gave 500 server error
+- Corrected if statement so it checked userId on existing post instead of navigating inside the object
+- Changed forbid to Unauthorized() to prevent server error 
+
+---
+
+
+# Task 3: Finish creating CRUD operations for Comment
+- write Update operation 
 - write Delete Comment operation
+
 
 
 --- --- --- --- --- ---
 Stuff to be completed for the assignment
 
 
-
 --- --- --- --- --- ---
 Future Tasks to improve project:
+
+# Task: Clean up in all aisles! (Or y'know Refactor and Polish Project)
+- Verify consistent build and folder structure
+- Align method, class, and variable names with conventions
+- Remove deprecated or duplicated code
+- Optimize logic for clarity and maintainability
 
 # Task: When saving strings to the database, make them lower case before saving
 
 # Task: Add more search criterias to 'SearchPost', and if queryItem == blank, search title and post by default
 
 # Task: Add pagination to larger data fetches
+
+# Task: Add Global error handling
+
+

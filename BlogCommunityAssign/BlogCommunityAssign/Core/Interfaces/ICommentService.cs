@@ -5,18 +5,18 @@ namespace BlogCommunityAssign.Core.Interfaces
 {
     public interface ICommentService
     {
-        Task<List<Comment>> GetAllComments();
+        Task<List<CommentDTO>> GetAllComments();
 
 
-        Task<Comment?> GetCommentById(int id);
+        Task<CommentDTO> GetCommentById(int id);
 
 
-        Task<int?> CreateComment(CreateCommentDTO comment, int postId, int? userId);
+        Task<int> CreateComment(CreateCommentDTO comment, int postId, int? userId);
 
 
-        Task<Comment> UpdateComment(int id);
+        Task<CommentDTO> UpdateComment(int id, UpdateCommentDTO dto, int userId, bool isAdmin);
 
 
-        Task<bool> DeleteComment(int id);
+        Task DeleteComment(int id, int userId, bool isAdmin);
     }
 }
