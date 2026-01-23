@@ -22,9 +22,11 @@ namespace BlogCommunityAssign.Core.Services
 
         }
 
-        public async Task<bool> DeleteCategory(int id)
+        public async Task DeleteCategory(int id)
         {
-            return await _repo.Delete(id);
+            Category? existingCategory = await GetCategoryById(id);
+            if (existingCategory == null) throw new KeyNotFoundException($"Category with {id} not found");
+            await _repo.Delete(existingCategory!);
         }
 
         public async Task<List<Category>> GetAllCategories()

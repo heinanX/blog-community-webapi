@@ -52,9 +52,15 @@ namespace BlogCommunityAssign.Data.Repos
 
         public async Task<Post> Update(Post post)
         {
-            //_db.Posts.Update(post);
             await _db.SaveChangesAsync();
             return post;
+        }
+
+        public Task<List<Category>> GetCategoriesByNames(IEnumerable<string> names)
+        {
+            return _db.Categories
+                .Where(c => names.Contains(c.CategoryName.ToLower()))
+                .ToListAsync();
         }
     }
 }

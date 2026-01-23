@@ -9,12 +9,10 @@ namespace BlogCommunityAssign.Core.Services
     {
 
         private readonly IPostRepo _repo;
-        private readonly ICategoryRepo _categoryRepo;
 
-        public PostService(IPostRepo repo, ICategoryRepo categoryRepo)
+        public PostService(IPostRepo repo)
         {
             _repo = repo;
-            _categoryRepo = categoryRepo;
         }
 
 
@@ -32,7 +30,9 @@ namespace BlogCommunityAssign.Core.Services
 
             if (post.Categories != null)
             {
-                List<Category> categories = await _categoryRepo.GetByNames(post.Categories);
+                IEnumerable<string> categoryNames = post.Categories.Select(n => n.Trim().ToLower());
+
+                List<Category> categories = await _repo.GetCategoriesByNames(categoryNames);
 
                 foreach (var category in categories)
                 {
@@ -116,7 +116,7 @@ namespace BlogCommunityAssign.Core.Services
 
             if (dto.Categories != null)
             {
-                List<Category> categories = await _categoryRepo.GetByNames(dto.Categories);
+                List<Category> categories = await _repo.GetCategoriesByNames(dto.Categories);
 
                 isPost.Categories.Clear();
                 foreach (var category in categories)

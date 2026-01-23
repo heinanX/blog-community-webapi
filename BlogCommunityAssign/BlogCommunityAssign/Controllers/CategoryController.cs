@@ -2,6 +2,7 @@
 using BlogCommunityAssign.Data.DTO.Categories;
 using BlogCommunityAssign.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCommunityAssign.Controllers
@@ -18,24 +19,22 @@ namespace BlogCommunityAssign.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Get()
-        {
 
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
+        {
             List<Category> categories = await _service.GetAllCategories();
             return Ok(categories);
-
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
-
             Category? category = await _service.GetCategoryById(id);
             if (category == null) return NotFound("Category not found");
 
             return Ok(category);
-
         }
 
 
@@ -68,12 +67,14 @@ namespace BlogCommunityAssign.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
-            
-            bool deleted = await _service.DeleteCategory(id);
-            if (!deleted) return BadRequest("Not a valid id");
-
-            return NoContent();
-
+            try
+            {
+                await _service.DeleteCategory(id);
+                return NoContent();
+            } catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     
     

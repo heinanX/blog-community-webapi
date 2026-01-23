@@ -16,5 +16,6 @@ namespace BlogCommunityAssign.Data.Interfaces
 
         Task<List<Post>> SearchByTitle(string searchTerm);
         Task<List<Post>> SearchByCategory(string searchTerm);
+        Task<List<Category>> GetCategoriesByNames(IEnumerable<string> names);
     }
 }

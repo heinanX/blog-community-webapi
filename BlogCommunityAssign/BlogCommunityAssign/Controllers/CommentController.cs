@@ -1,8 +1,6 @@
 ﻿using BlogCommunityAssign.Core.Extensions;
 using BlogCommunityAssign.Core.Interfaces;
-using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.DTO.Comments;
-using BlogCommunityAssign.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -69,6 +67,7 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> Update(int id, UpdateCommentDTO dto)
         {
             try { 
@@ -92,6 +91,7 @@ namespace BlogCommunityAssign.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             try

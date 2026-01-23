@@ -4,7 +4,6 @@ using BlogCommunityAssign.Data.DTO;
 using BlogCommunityAssign.Data.DTO.Users;
 using BlogCommunityAssign.Data.Entities;
 using BlogCommunityAssign.Data.Interfaces;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

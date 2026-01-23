@@ -302,12 +302,14 @@ Stuff to be completed for the assignment
 Future Tasks to improve project:
 
 # Task: Clean up in all aisles! (Or y'know Refactor and Polish Project)
+
+- Use DTOs and not entities in controllers 
 - Verify consistent build and folder structure
 - Align method, class, and variable names with conventions
 - Remove deprecated or duplicated code
 - Optimize logic for clarity and maintainability
 
-# Task: When saving strings to the database, make them lower case before saving
+# Task: Format data strings when handling db to avoid format errors: toLower and Trim
 
 # Task: Add more search criterias to 'SearchPost', and if queryItem == blank, search title and post by default
 

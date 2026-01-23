@@ -15,19 +15,15 @@ namespace BlogCommunityAssign.Data.Repos
 
         public async Task<Category> Create(Category category)
         {
-            _db.Add(category);
+            _db.Categories.Add(category);
             await _db.SaveChangesAsync();
             return category;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task Delete(Category category)
         {
-            Category? isCategory = await _db.Categories.FindAsync(id);
-            if (isCategory == null) return false;
-
-            _db.Remove(isCategory);
+            _db.Categories.Remove(category);
             await _db.SaveChangesAsync();
-            return true;
         }
 
         public async Task<List<Category>> GetAll()
@@ -38,15 +34,6 @@ namespace BlogCommunityAssign.Data.Repos
         public async Task<Category?> GetById(int id)
         {
             return await _db.Categories.FindAsync(id);
-        }
-
-        public Task<List<Category>> GetByNames(IEnumerable<string> names)
-        {
-            var normalized = names.Select(n => n.Trim().ToLower());
-
-            return _db.Categories
-                .Where(c => normalized.Contains(c.CategoryName.ToLower()))
-                .ToListAsync();
         }
 
         public async Task<Category> Update(Category category)

@@ -17,6 +17,6 @@ namespace BlogCommunityAssign.Core.Interfaces
         Task<Category?> UpdateCategory(int id, UpdateCategoryDTO category);
 
 
-        Task<bool> DeleteCategory(int id);
+        Task DeleteCategory(int id);
     }
 }
